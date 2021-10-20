@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
 const ProductRoute = require('./routes/product')
-//const AuthRoute = require('./routes/auth')
+const AuthRoute = require('./routes/auth')
 
 mongoose.connect('mongodb://localhost:27017/shopdb',{
     useNewUrlParser: true,
@@ -39,4 +39,4 @@ app.listen(PORT, ()=>{
 
 
 app.use('/api/product', ProductRoute)
-//app.use('/api', AuthRoute)
+app.use('/api', AuthRoute)
