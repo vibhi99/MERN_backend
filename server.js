@@ -3,6 +3,9 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
+const dotenv = require('dotenv')
+dotenv.config()
+
 const ProductRoute = require('./routes/product')
 const AuthRoute = require('./routes/auth')
 

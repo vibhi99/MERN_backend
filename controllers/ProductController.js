@@ -2,17 +2,35 @@ const Product = require('../models/Product')
 
 //Show the list of Employee
 const index = (req, res, next)=>{
-    Product.find()
-    .then(response => {
-        res.json({
-            response
-        })
-    })
-    .catch(error => {
-        res.json({
-            message: 'An error Occurred!'
-        })
-    })
+    if(req.query.page && req.query.limit){
+        Product.paginate({}, {page: req.query.page, limit: req.query.limit})
+            .then(response => {
+                res.json({
+                    response
+                })
+            })
+            .catch(error => {
+                res.json({
+                    message: 'An error Occurred!' + error
+                })
+            })
+    }
+    else{
+        Product.find()
+            .then(response => {
+                res.json({
+                    response
+                })
+            })
+            .catch(error => {
+                res.json({
+                    message: 'An error Occurred!'
+                })
+            })
+    }
+    
+
+    
 }
 
 //Show single employee

@@ -2,6 +2,8 @@ const { timeStamp } = require('console')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const mongoosePaginate = require('mongoose-paginate-v2')
+
 const productSchema = new Schema({
     prodname: {
         type: String
@@ -17,6 +19,8 @@ const productSchema = new Schema({
     }
 
 }, {timeStamps:true})
+
+productSchema.plugin(mongoosePaginate)
 
 const Product = mongoose.model('Product', productSchema)
 module.exports = Product
