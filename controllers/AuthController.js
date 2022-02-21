@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const register = (req, res, next) =>{
     bcrypt.hash(req.body.password, 10, function(err, hashedPass){
         if(err){
-            res.json({
+            return res.json({
                 error: err
             })
         }
@@ -17,7 +17,9 @@ const register = (req, res, next) =>{
             role: req.body.role,
             password: hashedPass
         })
+        
         user.save()
+
         .then(user =>{
             res.json({
                 message: 'USer added Successfully'
@@ -45,8 +47,14 @@ const login = (req, res, next) =>{
                     })
                 }
                 if(result){
-                    let token = jwt.sign({name: user.name, role: user.role}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME})
-                    let refreshToken = jwt.sign({name: user.name, role: user.role}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME})
+
+                    let token = jwt.sign({name: user.name, role: user.role}, 
+                        process.env.ACCESS_TOKEN_SECRET, 
+                        {expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME})
+
+                    let refreshToken = jwt.sign({name: user.name, role: user.role}, 
+                        process.env.REFRESH_TOKEN_SECRET, 
+                        {expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME})
 
                     res.json({
                         message: 'Login Successfull!',
@@ -76,7 +84,11 @@ const refreshToken = (req, res, next) => {
             })
         }
         else{
-            let token = jwt.sign({name: decode.name, role: decode.role}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME})
+            
+            let token = jwt.sign({name: decode.name, role: decode.role}, 
+                process.env.ACCESS_TOKEN_SECRET, 
+                {expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME})
+
             let refreshToken = req.body.refreshToken
             res.status(200).json({
                 messgae: "Token refreshed Successfully!",
